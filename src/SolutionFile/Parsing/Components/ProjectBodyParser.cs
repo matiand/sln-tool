@@ -8,6 +8,8 @@ namespace SolutionFile.Parsing.Components
 {
     public class ProjectBodyParser : IParserComponent
     {
+        private string _projectName;
+
         public bool Matches(string line)
         {
             return line.StartsWith("Project(");
@@ -45,10 +47,12 @@ namespace SolutionFile.Parsing.Components
             const string pattern = @"""{(?<type>.+?)}"".+?""(?<name>.+?)"".+?""(?<path>.+?)"".+""{(?<id>.+?)}""";
             var capturedGroups = Regex.Match(firstLine, pattern).Groups;
 
+            _projectName = capturedGroups["name"].Value;
+
             return new ProjectBodyHeader
             {
                 ProjectType = Guid.Parse(capturedGroups["type"].Value),
-                Name = capturedGroups["name"].Value,
+                Name = _projectName,
                 RelativePath = capturedGroups["path"].Value,
                 Id = Guid.Parse(capturedGroups["id"].Value),
             };
@@ -72,7 +76,7 @@ namespace SolutionFile.Parsing.Components
 
         private IDocumentSection ParseSolutionItems(TextReader reader)
         {
-            var solutionItems = new SolutionItems();
+            var solutionItems = new SolutionItems(_projectName);
 
             var nextLine = reader.ReadLine();
             while (nextLine is not null)

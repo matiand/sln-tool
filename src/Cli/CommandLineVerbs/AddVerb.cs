@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CommandLine;
 using SolutionFile.Document;
@@ -23,7 +22,19 @@ namespace Cli.CommandLineVerbs
 
         public void Run(SolutionDocument document)
         {
-            throw new NotImplementedException();
+            foreach (var file in FilesToAdd)
+            {
+                document.AddFileToFolder(SolutionFolder, file);
+            }
+
+            document.SaveToFile("new-ver.sln");
+
+            // if given SolutionFolder is not found, CREATE IT (and add it as last in project section)
+            // for each file to add
+            //      skip it if it exists
+            //      add it to that section
+            // save the file    
+            // TODO handle nested scenarios
         }
     }
 }

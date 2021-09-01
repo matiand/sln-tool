@@ -7,6 +7,12 @@ namespace SolutionFile.Document.Sections
 {
     public class SolutionItems : IDocumentSection
     {
+        public SolutionItems(string folderName)
+        {
+            FolderName = folderName;
+        }
+
+        public string FolderName { get; }
         public OrderedDictionary Elements { get; set; } = new();
 
         public IEnumerable<string> ToRawLines()
@@ -15,7 +21,7 @@ namespace SolutionFile.Document.Sections
 
             lines.Add("\tProjectSection(SolutionItems) = preProject");
             lines.AddRange(Elements.Cast<DictionaryEntry>().Select(de => $"\t\t{de.Key} = {de.Value}"));
-            lines.Add("EndProjectSection");
+            lines.Add("\tEndProjectSection");
 
             return lines;
         }
