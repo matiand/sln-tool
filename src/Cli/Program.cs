@@ -1,40 +1,49 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using SolutionFile.Parsing;
-using SolutionFile.Parsing.Components;
+using Cli.CommandLineVerbs;
+using CommandLine;
+using SolutionFile.Document;
 
 namespace Cli
 {
     internal class Program
     {
+        private static readonly Parser CliParser = Parser.Default;
+
         private static void Main(string[] args)
         {
-            // var absPath = Path.GetFullPath(@"../../../in/eShopOnWeb.sln");
-            // var sln = SolutionFile.Parse(absPath);
-
-            var cwd = Directory.GetCurrentDirectory();
-            var slnPath = Path.Join(cwd, "../../../../../sln-tool.sln");
-
-            var slnParserComponents = GetAllParserComponents();
-            var slnParser = new SolutionFileParser(slnPath, slnParserComponents);
-
-            var document = slnParser.Parse();
-
-            var outFilePath = Path.Combine("../../../../../out.sln");
-            document.SaveToFile(outFilePath);
+            try
+            {
+                HandleInput(args);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Failure: {e.Message}");
+                Environment.Exit(exitCode: 1);
+            }
         }
 
-        private static IEnumerable<IParserComponent> GetAllParserComponents()
+        private static void HandleInput(string[] args)
         {
-            var desiredInterface = typeof(IParserComponent);
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            var components = assemblies.SelectMany(a => a.GetTypes())
-                .Where(t => desiredInterface.IsAssignableFrom(t) && t.IsClass && !t.IsAbstract);
-
-            return components.Select(type => (IParserComponent)Activator.CreateInstance(type));
+            CliParser.ParseArguments<ExamplesVerb, AddVerb, RemoveVerb,
+                    ListSolutionFoldersVerb>(args)
+                .WithParsed<AddVerb>(verb =>
+                {
+                    var document = new SolutionDocumentBuilder().Build(verb.SolutionFileName);
+                    verb.Run(document);
+                })
+                .WithParsed<RemoveVerb>(verb =>
+                {
+                    var document = new SolutionDocumentBuilder().Build(verb.SolutionFileName);
+                    verb.Run(document);
+                })
+                .WithParsed<ListSolutionFoldersVerb>(
+                    verb =>
+                    {
+                        var document = new SolutionDocumentBuilder().Build(verb.SolutionFileName);
+                        verb.Run(document);
+                    })
+                .WithParsed<ExamplesVerb>(verb => { verb.Run(_: null); })
+                .WithNotParsed(_ => { Environment.Exit(exitCode: 1); });
         }
     }
 }

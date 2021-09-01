@@ -12,8 +12,6 @@ namespace SolutionFile.Document
 
         private readonly bool _shouldEmitByteOrderMark;
 
-        // private readonly string _byteOrderMark = new(new[] { '\xEF', '\xBB', '\xBF' });
-
         public SolutionDocument(string lineEnding, bool shouldEmitByteOrderMark)
         {
             _lineEnding = lineEnding;
