@@ -10,5 +10,15 @@ namespace SolutionFile.Document.Sections
         {
             _lines = lines;
         }
+
+        public RawSection()
+        {
+            _lines = new List<string> { "" };
+        }
+
+        public IEnumerable<string> ToRawLines()
+        {
+            return _lines;
+        }
     }
 }

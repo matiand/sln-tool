@@ -2,18 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using SolutionFile.Document;
+using SolutionFile.Document.Sections;
+using SolutionFile.Extensions;
 using SolutionFile.Parsing.Components;
 
 namespace SolutionFile.Parsing
 {
     public class SolutionFileParser : IDisposable
     {
+        private readonly SolutionDocument _document;
         private readonly IEnumerable<IParserComponent> _parserComponents;
         private readonly StreamReader _reader;
 
         public SolutionFileParser(string slnAbsPath, IEnumerable<IParserComponent> parserComponents)
         {
-            _reader = new StreamReader(File.OpenRead(slnAbsPath));
+            var file = File.OpenRead(slnAbsPath);
+            _document = new SolutionDocument(file.GetLineEnding(), file.HasByteOrderMark());
+            _reader = new StreamReader(file);
+
             _parserComponents = parserComponents;
         }
 
@@ -24,13 +30,13 @@ namespace SolutionFile.Parsing
 
         public SolutionDocument Parse()
         {
-            var document = new SolutionDocument();
-
             var nextLine = _reader.ReadLine();
+
             while (nextLine is not null)
             {
                 if (nextLine.Trim().Length == 0)
                 {
+                    _document.Sections.Add(new RawSection());
                     nextLine = _reader.ReadLine();
                     continue;
                 }
@@ -40,7 +46,7 @@ namespace SolutionFile.Parsing
                     if (component.Matches(nextLine))
                     {
                         var documentSection = component.Parse(nextLine, _reader);
-                        document.Sections.AddRange(documentSection);
+                        _document.Sections.AddRange(documentSection);
                         break;
                     }
                 }
@@ -48,7 +54,7 @@ namespace SolutionFile.Parsing
                 nextLine = _reader.ReadLine();
             }
 
-            return document;
+            return _document;
         }
     }
 }

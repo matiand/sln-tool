@@ -21,6 +21,9 @@ namespace Cli
             var slnParser = new SolutionFileParser(slnPath, slnParserComponents);
 
             var document = slnParser.Parse();
+
+            var outFilePath = Path.Combine("../../../../../out.sln");
+            document.SaveToFile(outFilePath);
         }
 
         private static IEnumerable<IParserComponent> GetAllParserComponents()
