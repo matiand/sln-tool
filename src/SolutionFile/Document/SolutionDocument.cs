@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using SolutionFile.Document.Sections;
+using SolutionFile.Extensions;
 
 namespace SolutionFile.Document
 {
@@ -27,11 +28,19 @@ namespace SolutionFile.Document
 
             var itemsSection =
                 (SolutionItems)Sections.First(s => s is SolutionItems sItems && sItems.FolderName == folder);
-            itemsSection.Elements.Add(file, file);
+
+            // Silently ignore existing entries
+            itemsSection.Elements.TryAdd(file, file);
         }
 
         public void RemoveFileToFolder(string folder, string file)
         {
+            if (!FolderExists(folder)) throw new ArgumentException("Folder could not be found");
+
+            var itemsSection =
+                (SolutionItems)Sections.First(s => s is SolutionItems sItems && sItems.FolderName == folder);
+
+            itemsSection.Elements.Remove(file);
         }
 
         public void SaveToFile(string filePath)

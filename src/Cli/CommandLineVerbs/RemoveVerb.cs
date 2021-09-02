@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using CommandLine;
 using SolutionFile.Document;
@@ -23,7 +22,12 @@ namespace Cli.CommandLineVerbs
 
         public void Run(SolutionDocument document)
         {
-            throw new NotImplementedException();
+            foreach (var file in FilesToRemove)
+            {
+                document.RemoveFileToFolder(SolutionFolder, file);
+            }
+
+            document.SaveToFile("new-ver.sln");
         }
     }
 }

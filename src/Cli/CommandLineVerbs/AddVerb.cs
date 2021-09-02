@@ -28,12 +28,6 @@ namespace Cli.CommandLineVerbs
             }
 
             document.SaveToFile("new-ver.sln");
-
-            // if given SolutionFolder is not found, CREATE IT (and add it as last in project section)
-            // for each file to add
-            //      skip it if it exists
-            //      add it to that section
-            // save the file    
             // TODO handle nested scenarios
         }
     }
