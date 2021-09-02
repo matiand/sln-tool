@@ -13,8 +13,4 @@
         <PackageReference Include="CommandLineParser" Version="2.8.0"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <None Include="./eShopOnWeb.sln" CopyToOutputDirectory="Always"/>
-    </ItemGroup>
-
 </Project>
