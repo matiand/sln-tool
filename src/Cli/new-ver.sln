@@ -39,6 +39,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorAdmin", "src\BlazorAd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorShared", "src\BlazorShared\BlazorShared.csproj", "{715CF7AF-A1EE-40A6-94A0-8DA3F3B2CAE9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker config", "docker config", "{1AAB86A4-448D-4F69-B5D2-DD432AA528C2}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
