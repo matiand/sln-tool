@@ -27,8 +27,7 @@ namespace Cli.CommandLineVerbs
                 document.AddFileToFolder(SolutionFolder, file);
             }
 
-            document.SaveToFile("new-ver.sln");
-            // TODO handle nested scenarios
+            document.SaveToFile(document.SolutionPath);
         }
     }
 }

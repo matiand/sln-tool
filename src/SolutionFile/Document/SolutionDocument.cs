@@ -14,12 +14,14 @@ namespace SolutionFile.Document
         private readonly string _lineEnding;
         private readonly bool _shouldEmitByteOrderMark;
 
-        public SolutionDocument(string lineEnding, bool shouldEmitByteOrderMark)
+        public SolutionDocument(string slnPath, string lineEnding, bool shouldEmitByteOrderMark)
         {
+            SolutionPath = slnPath;
             _lineEnding = lineEnding;
             _shouldEmitByteOrderMark = shouldEmitByteOrderMark;
         }
 
+        public string SolutionPath { get; }
         public List<IDocumentSection> Sections { get; } = new();
 
         public void AddFileToFolder(string folder, string file)

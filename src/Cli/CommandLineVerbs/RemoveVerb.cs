@@ -27,7 +27,7 @@ namespace Cli.CommandLineVerbs
                 document.RemoveFileToFolder(SolutionFolder, file);
             }
 
-            document.SaveToFile("new-ver.sln");
+            document.SaveToFile(document.SolutionPath);
         }
     }
 }

@@ -14,10 +14,10 @@ namespace SolutionFile.Parsing
         private readonly IEnumerable<IParserComponent> _parserComponents;
         private readonly StreamReader _reader;
 
-        public SolutionFileParser(string slnAbsPath, IEnumerable<IParserComponent> parserComponents)
+        public SolutionFileParser(string slnPath, IEnumerable<IParserComponent> parserComponents)
         {
-            var file = File.OpenRead(slnAbsPath);
-            _document = new SolutionDocument(file.GetLineEnding(), file.HasByteOrderMark());
+            var file = File.OpenRead(slnPath);
+            _document = new SolutionDocument(slnPath, file.GetLineEnding(), file.HasByteOrderMark());
             _reader = new StreamReader(file);
 
             _parserComponents = parserComponents;
