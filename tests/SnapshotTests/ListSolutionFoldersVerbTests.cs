@@ -24,7 +24,10 @@ namespace SnapshotTests
             Console.SetOut(output);
             listVerb.Run(doc);
             // Skip last entry that is empty
-            var actualFolderList = output.ToString().Split("\n").SkipLast(count: 1).ToList();
+            var actualFolderList = output.ToString()
+                .Split(Environment.NewLine)
+                .SkipLast(count: 1)
+                .ToList();
 
             Assert.Equal(expectedFolderCount, actualFolderList.Count);
             Assert.Contains(actualFolderList, item => item == "src");
