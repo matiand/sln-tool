@@ -26,8 +26,6 @@ namespace Cli.CommandLineVerbs
             {
                 document.RemoveFileFromFolder(SolutionFolder, file);
             }
-
-            document.SaveToFile(document.SolutionPath);
         }
     }
 }

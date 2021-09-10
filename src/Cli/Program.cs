@@ -30,10 +30,12 @@ namespace Cli
                 {
                     var document = new SolutionDocumentBuilder().Build(verb.SolutionFileName);
                     verb.Run(document);
+                    document.SaveToFile(document.SolutionPath);
                 })
                 .WithParsed<RemoveVerb>(verb =>
                 {
                     var document = new SolutionDocumentBuilder().Build(verb.SolutionFileName);
+                    document.SaveToFile(document.SolutionPath);
                     verb.Run(document);
                 })
                 .WithParsed<ListSolutionFoldersVerb>(
