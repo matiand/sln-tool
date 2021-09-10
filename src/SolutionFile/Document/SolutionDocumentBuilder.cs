@@ -9,19 +9,34 @@ namespace SolutionFile.Document
 {
     public class SolutionDocumentBuilder
     {
-        public SolutionDocument Build(string fileName)
+        private string _slnPath;
+
+        public SolutionDocumentBuilder WithFilePattern(string filePattern)
         {
-            var slnPath = FindSolutionFile(fileName);
+            _slnPath = FindSolutionFile(filePattern);
+            return this;
+        }
+
+        public SolutionDocumentBuilder WithAbsolutePath(string filePath)
+        {
+            _slnPath = filePath;
+            return this;
+        }
+
+        public SolutionDocument Build()
+        {
+            if (_slnPath is null) throw new InvalidOperationException("Cannot build solution document without slnPath");
+
             var slnParserComponents = GetAllParserComponents();
-            var slnParser = new SolutionFileParser(slnPath, slnParserComponents);
+            using var slnParser = new SolutionFileParser(_slnPath, slnParserComponents);
 
             return slnParser.Parse();
         }
 
-        private static string FindSolutionFile(string fileName)
+        private static string FindSolutionFile(string filePattern)
         {
-            // If fileName is empty we look for a *.sln file in current directory
-            if (fileName is null || fileName.Length == 0)
+            // If filePattern is empty we look for a *.sln file in current directory
+            if (filePattern is null || filePattern.Length == 0)
             {
                 var foundSlnFile = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.sln")
                     .FirstOrDefault();
@@ -34,7 +49,7 @@ namespace SolutionFile.Document
                 return foundSlnFile;
             }
 
-            var fullSlnName = fileName.EndsWith(".sln") ? fileName : $"{fileName}.sln";
+            var fullSlnName = filePattern.EndsWith(".sln") ? filePattern : $"{filePattern}.sln";
             var slnPath = Path.Combine(Directory.GetCurrentDirectory(), fullSlnName);
 
             if (!File.Exists(slnPath))

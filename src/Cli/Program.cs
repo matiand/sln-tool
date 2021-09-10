@@ -28,22 +28,27 @@ namespace Cli
                     ListSolutionFoldersVerb>(args)
                 .WithParsed<AddVerb>(verb =>
                 {
-                    var document = new SolutionDocumentBuilder().Build(verb.SolutionFileName);
+                    var document = new SolutionDocumentBuilder()
+                        .WithFilePattern(verb.SolutionFileName)
+                        .Build();
                     verb.Run(document);
                     document.SaveToFile(document.SolutionPath);
                 })
                 .WithParsed<RemoveVerb>(verb =>
                 {
-                    var document = new SolutionDocumentBuilder().Build(verb.SolutionFileName);
+                    var document = new SolutionDocumentBuilder()
+                        .WithFilePattern(verb.SolutionFileName)
+                        .Build();
+                    verb.Run(document);
                     document.SaveToFile(document.SolutionPath);
+                })
+                .WithParsed<ListSolutionFoldersVerb>(verb =>
+                {
+                    var document = new SolutionDocumentBuilder()
+                        .WithFilePattern(verb.SolutionFileName)
+                        .Build();
                     verb.Run(document);
                 })
-                .WithParsed<ListSolutionFoldersVerb>(
-                    verb =>
-                    {
-                        var document = new SolutionDocumentBuilder().Build(verb.SolutionFileName);
-                        verb.Run(document);
-                    })
                 .WithParsed<ExamplesVerb>(verb => { verb.Run(_: null); })
                 .WithNotParsed(_ => { Environment.Exit(exitCode: 1); });
         }
