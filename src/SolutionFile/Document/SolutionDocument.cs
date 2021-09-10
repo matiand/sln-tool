@@ -37,7 +37,7 @@ namespace SolutionFile.Document
             itemsSection.Elements.TryAdd(file, file);
         }
 
-        public void RemoveFileToFolder(string folder, string file)
+        public void RemoveFileFromFolder(string folder, string file)
         {
             if (!FolderExists(folder)) throw new ArgumentException("Folder could not be found");
 

@@ -24,7 +24,7 @@ namespace Cli.CommandLineVerbs
         {
             foreach (var file in FilesToRemove)
             {
-                document.RemoveFileToFolder(SolutionFolder, file);
+                document.RemoveFileFromFolder(SolutionFolder, file);
             }
 
             document.SaveToFile(document.SolutionPath);
