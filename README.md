@@ -11,7 +11,7 @@ Here it is in action:
 
 ## Installation
 
-Installation is available via [NuGet](https://www.nuget.org/packages/sln-tool). You need .NET 5 to use this tool.
+Installation is available via [NuGet](https://www.nuget.org/packages/sln-tool). You need .NET 6.0 to use this tool.
 
 Run this command:
 
